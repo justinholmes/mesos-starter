@@ -101,6 +101,9 @@ It is recommended to have this rule enabled in most cases.
 ## Role assigned
 This rule only accept offers assigned to the Role defined in `mesos.role`.
 
+## Mesos User
+The default user is root and can be overridden by using `mesos.user`.
+
 # Use cases
 
 A few good examples

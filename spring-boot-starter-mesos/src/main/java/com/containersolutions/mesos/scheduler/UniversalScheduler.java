@@ -1,7 +1,7 @@
 package com.containersolutions.mesos.scheduler;
 
-import com.containersolutions.mesos.scheduler.events.*;
 import com.containersolutions.mesos.scheduler.config.MesosConfigProperties;
+import com.containersolutions.mesos.scheduler.events.*;
 import com.containersolutions.mesos.scheduler.requirements.OfferEvaluation;
 import com.containersolutions.mesos.scheduler.state.StateRepository;
 import com.containersolutions.mesos.utils.StreamHelper;
@@ -34,6 +34,9 @@ public class UniversalScheduler implements Scheduler, ApplicationListener<Applic
     @Value("${spring.application.name}")
     protected String applicationName;
 
+    @Value("${mesos.user:root}")
+    protected String mesosUser;
+
     @Autowired
     MesosConfigProperties mesosConfig;
 
@@ -62,9 +65,10 @@ public class UniversalScheduler implements Scheduler, ApplicationListener<Applic
     }
 
     public void start() {
+        logger.info("Running task as" + mesosUser);
         Protos.FrameworkInfo.Builder frameworkBuilder = Protos.FrameworkInfo.newBuilder()
                 .setName(applicationName)
-                .setUser("root")
+                .setUser(mesosUser)
                 .setRole(mesosConfig.getRole())
                 .setCheckpoint(true)
                 .setFailoverTimeout(60.0)
